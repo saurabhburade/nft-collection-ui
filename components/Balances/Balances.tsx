@@ -93,8 +93,9 @@ function NftBalances({}: Props) {
         nftBalIds.length &&
         nftBalIds?.map((id) => <NftCardLoading id={id} />)}
 
-      {nftBalancesWithMetaData?.map((nft) => {
-        return <NftCard {...nft} key={nft?.id} />;
+      {nftBalancesWithMetaData?.map((nft, idx) => {
+        const nftID = nftBalIds[idx];
+        return <NftCard {...nft} id={nftID} key={nft?.id} />;
       })}
     </div>
   );
