@@ -23,7 +23,7 @@ function NftMint({}: Props) {
       if (_owner == account) {
         setisOwner(true);
       }
-    
+
       setmaxMintLimit(Number(maxMintLimit));
       setnftCost(cost);
     };
@@ -48,7 +48,7 @@ function NftMint({}: Props) {
           })
         : await nftContract.methods.mint(amountToMint).send({
             from: account,
-            value: isOwner ? 0 : amountToMint * nftCost,
+            value: amountToMint * nftCost,
           });
       console.log("====================================");
       console.log({ txn });
@@ -83,6 +83,13 @@ function NftMint({}: Props) {
     <div className="w-full">
       <div>
         <p>Max Mints : {maxMintLimit}</p>
+        <p>Unit NFT Cost : {web3?.utils?.fromWei(nftCost?.toString())}</p>
+        <p>
+          Payable NFT Cost :{" "}
+          {isOwner
+            ? 0
+            : web3?.utils?.fromWei((nftCost * amountToMint)?.toString())}
+        </p>
       </div>
       <div>
         <label
@@ -103,7 +110,11 @@ function NftMint({}: Props) {
             onChange={handleAmountToMint}
             required
           />
-          <button className="btn btn-primary" onClick={handleOnMint}>
+          <button
+            className="btn btn-primary"
+            onClick={handleOnMint}
+            disabled={nftCost <= 0}
+          >
             Mint
           </button>
         </div>
